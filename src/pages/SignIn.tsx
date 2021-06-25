@@ -1,7 +1,11 @@
-import { makeStyles, Theme, Paper, Typography } from "@material-ui/core";
-import PluggableForm from "../components/common/PluggableForm";
+import { makeStyles, Theme, Paper, Typography, Button, Box } from "@material-ui/core";
 import clsx from "clsx";
 import { signin } from "../utils/constants";
+import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import { loginSchema } from "../utils/schemas";
+import { useState } from "react";
+import FormElements from "../components/common/FormElements";
 
 const useStyles = makeStyles((theme: Theme) => ({
   signin_container: {
@@ -13,29 +17,77 @@ const useStyles = makeStyles((theme: Theme) => ({
       padding: theme.spacing(6),
     },
     "& h4": {
-      color: theme.palette.primary.main,
       marginBottom: theme.spacing(4),
     },
-    "& .form-container": {
+    "& .theme-form-container": {
       display: "flex",
       flexDirection: "column",
+    },
+    "& form": {
+      marginBottom: theme.spacing(2),
     },
     "& .MuiFormControl-root": {
       margin: theme.spacing(0, 0, 3, 0),
     },
+    "& .theme-btn-container": {
+      display: "flex",
+      justifyContent: "center",
+    },
+    "& a": {
+      color: theme.palette.primary.main,
+      textDecoration: "none",
+      "&:hover": {
+        cursor: "pointer",
+      },
+    },
+  },
+  register_link: {
+    marginTop: theme.spacing(2),
   },
 }));
 
 const SignIn: React.FC = () => {
   const classes = useStyles();
+  const [formValues] = useState<any>({});
+
+  const formik = useFormik({
+    initialValues: formValues,
+    validationSchema: loginSchema,
+    onSubmit: (values) => {
+      handleSubmit(values)
+    }
+  });
+  
+  const handleSubmit = (values: any) => {
+    console.log(values)
+  }
 
   return (
-    <div className={clsx(classes.signin_container)}>
+    <Box className={clsx(classes.signin_container)}>
       <Paper>
         <Typography variant="h4">SIGN IN</Typography>
-        <PluggableForm config={signin} />
+        <form onSubmit={formik.handleSubmit} autoComplete="off">
+          <Box onChange={formik.handleChange}>
+            {signin.fields?.map((item: any, i: number) => (
+              <Box key={i}>
+                <FormElements
+                  {...item}
+                  variant="outlined"
+                  helperText={formik.errors[item.name]}
+                  value={formik.values[item.name]}
+                />
+              </Box>
+            ))}
+          </Box>
+          <Box className="theme-btn-container">
+            <Button type="submit" color="primary" variant="contained">Submit</Button>
+          </Box>
+        </form>
+        <Link to="/register">
+          <Typography variant="caption">Create an Account</Typography>
+        </Link>
       </Paper>
-    </div>
+    </Box>
   );
 };
 

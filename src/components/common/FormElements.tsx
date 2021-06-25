@@ -10,23 +10,30 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-const FormElements: React.FC<any> = ({ config, helperText, value }) => {
+const FormElements: React.FC<any> = ({ field, label, name, helperText, variant, value, ...rest }) => {
     const classes = useStyles();
-
-    switch(config.field){
+    switch(field){
         case "textbox":
             return (
                 <TextField
+                    fullWidth
                     className={clsx(classes.textField)}
-                    id={config.label}
-                    name={config.name}
-                    label={config.label}
-                    variant="outlined"
-                    type={config.type}
+                    id={label}
+                    label={label}
+                    name={name}
+                    variant={variant}
                     error={!!helperText}
                     helperText={helperText}
                     value={value}
-                    { ...(config.props || {})}
+                    type={rest.type}
+                />
+            )
+        case "file":
+            return (
+                <input
+                    type="file"
+                    value={value}
+                    { ...rest}
                 />
             )
         default:

@@ -2,35 +2,37 @@ import { Button } from "@material-ui/core";
 import FormElements from "./FormElements";
 import { useFormik } from 'formik';
 
-const PluggableForm: React.FC<any> = ({ config }) => {
+const PluggableForm: React.FC<any> = ({ config, valueProps }) => {
   const { fields, submit } = config;
   const formik = useFormik({
-    initialValues: {
-      email: 'foobar@example.com',
-      password: 'foobar',
-    },
+    initialValues: valueProps,
     validationSchema: config.rules,
     onSubmit: (values) => {
       handleSubmit(values)
     }
   });
-
+  
   const handleSubmit = (values: any) => {
     console.log(values)
   }
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <div className="form-container" onChange={formik.handleChange}>
+      <div className="theme-form-container" onChange={formik.handleChange}>
         {fields?.map((item: any, i: number) => (
+          <div key={i} className="theme-form-item">
             <FormElements
               config={item}
-              helperText={formik.errors['email']}
-              value={formik.values['email']}
+              variant="contained"
+              helperText={formik.errors[item.name]}
+              value={formik.values[item.name]}
             />
+          </div>
         ))}
       </div>
-      <Button type="submit" {...submit.props}>{submit.label || "Submit"}</Button>
+      <div className="theme-btn-container">
+        <Button type="submit" {...submit.props}>{submit.label}</Button>
+      </div>
     </form>
   );
 };

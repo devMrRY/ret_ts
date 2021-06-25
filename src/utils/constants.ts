@@ -1,5 +1,3 @@
-import { loginSchema } from './schemas';
-
 export const signin = {
   fields: [
     {
@@ -7,10 +5,10 @@ export const signin = {
       name: "email",
       label: "Email",
       type: "email",
-      helperText: "",
       class: [],
-      disabled: false,
-      props: {}
+      props: {
+        disabled: false,
+      }
     },
     {
       field: "textbox",
@@ -18,14 +16,61 @@ export const signin = {
       label: "Password",
       type: "password",
       class: [],
+      props: {}
     },
   ],
-  submit: {
-    label: "Submit",
-    props: {
-      variant: "contained"
+};
+
+
+export const register = {
+  fields: [
+    {
+      field: "textbox",
+      name: "firstname",
+      label: "FirstName",
+      type: "text",
+      props: {}
+    },
+    {
+      field: "textbox",
+      name: "lastname",
+      label: "LastName",
+      type: "text",
+      props: {}
+    },
+    {
+      field: "textbox",
+      name: "email",
+      label: "Email",
+      type: "email",
+      class: [],
+      props: {
+        disabled: false,
+      }
+    },
+    {
+      field: "textbox",
+      name: "phone",
+      label: "Phone Number",
+      type: "phone",
+    },
+    {
+      field: "textbox",
+      name: "address",
+      label: "Address",
+      type: "text",
+    },
+    {
+      field: "textbox",
+      name: "password",
+      label: "Password",
+      type: "password",
+    },
+    {
+      field: "textbox",
+      name: "confirm_password",
+      label: "Confirm Password",
+      type: "password",
     }
-  },
-  rules: loginSchema,
-  cancel: {},
+  ]
 };
