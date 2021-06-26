@@ -6,6 +6,8 @@ import { useFormik } from "formik";
 import { loginSchema } from "../utils/schemas";
 import { useState } from "react";
 import FormElements from "../components/common/FormElements";
+import { loginAction } from "../redux/actions/auth";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme: Theme) => ({
   signin_container: {
@@ -49,6 +51,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 const SignIn: React.FC = () => {
   const classes = useStyles();
   const [formValues] = useState<any>({});
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: formValues,
@@ -59,7 +62,8 @@ const SignIn: React.FC = () => {
   });
   
   const handleSubmit = (values: any) => {
-    console.log(values)
+    let query = `?email=${values.email}&password=${values.password}`;
+    dispatch(loginAction(query));
   }
 
   return (

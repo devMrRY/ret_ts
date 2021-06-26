@@ -22,14 +22,9 @@ export const registerSchema = loginSchema.shape({
     .required("Phone Number is required"),
   userImage: yup.mixed()
     .required("User Image is required")
-    // .test("type", "Only the following formats are accepted: .jpeg, .jpg, .bmp, .pdf and .doc", (value) => {
-    //   console.log(value)
-    //   return value && (
-    //     value[0].type === "image/jpeg" ||
-    //     value[0].type === "image/jpg" ||
-    //     value[0].type === "image/webp" ||
-    //     value[0].type === "image/bmp" ||
-    //     value[0].type === "image/png"
-    //   )
-    // })
+    .test("type", "Only the following formats are accepted: .jpeg, .jpg, .bmp, .png", (value) => {
+      return value && (
+        ["image/jpeg", "image/jpg", "image/webp", "image/bmp", "image/png"].includes(value.type)
+      )
+    })
 });

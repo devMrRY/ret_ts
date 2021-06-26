@@ -22,18 +22,20 @@ export const signin = {
 };
 
 
-export const register = {
+export const register: any = {
   fields: [
     {
       field: "textbox",
       name: "firstname",
       label: "FirstName",
       type: "text",
+      variant: "outlined",
       props: {}
     },
     {
       field: "textbox",
       name: "lastname",
+      variant: "outlined",
       label: "LastName",
       type: "text",
       props: {}
@@ -42,6 +44,7 @@ export const register = {
       field: "textbox",
       name: "email",
       label: "Email",
+      variant: "outlined",
       type: "email",
       class: [],
       props: {
@@ -52,25 +55,35 @@ export const register = {
       field: "textbox",
       name: "phone",
       label: "Phone Number",
+      variant: "outlined",
       type: "phone",
     },
     {
       field: "textbox",
       name: "address",
       label: "Address",
+      variant: "outlined",
       type: "text",
     },
     {
       field: "textbox",
       name: "password",
       label: "Password",
+      variant: "outlined",
       type: "password",
     },
     {
       field: "textbox",
       name: "confirm_password",
       label: "Confirm Password",
+      variant: "outlined",
       type: "password",
+    },
+    {
+      field: "file",
+      name: "userImage",
+      label: "User Image",
+      type: "file",
     }
   ]
 };
