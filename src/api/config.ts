@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { getToken } from '../utils/helper';
+import { checkAuth } from '../utils/helper';
 
 const Axios = axios.create({
     baseURL: 'http://localhost:5000/'
 })
 
 Axios.interceptors.request.use(async (config) => {
-    const token = getToken();
+    const token = checkAuth();
     const configuration = config;
     if(token){
         configuration.headers.Authorization = `Bearer ${token}`

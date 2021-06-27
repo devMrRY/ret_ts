@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Redirect, RouteProps } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { IRootState } from "../redux/reducers";
+import { checkAuth } from "../utils/helper";
 
 export type ProtectedRouteProps = {
 	component: React.ComponentType<any>;
@@ -14,7 +15,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
     const isAuthenticated = useSelector(({auth}:IRootState) => auth.isAuth);
 
     return (
-        isAuthenticated ?
+        isAuthenticated || checkAuth() ?
         (<Route {...rest} component={Component} />) :
         (<Redirect to="/" />)
     )

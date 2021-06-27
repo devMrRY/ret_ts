@@ -1,6 +1,6 @@
 import {
   LOGIN_SUCCESS,
-  LOGOUT_SUCCESS,
+  LOGOUT,
 } from '../actions/types';
 
 import { IUserRedux, actionTypes, IUser } from "../../utils/interfaces";
@@ -23,7 +23,7 @@ const userReducer= (state:IUserRedux = initialState, action: IAction) =>{
         isAuth: true,
         isLoading: false
       };
-    case LOGOUT_SUCCESS:
+    case LOGOUT:
       return {
         ...initialState
       };

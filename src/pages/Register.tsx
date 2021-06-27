@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { register } from "../utils/constants";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
-import { useEffect, useState } from "react";
+import { Dispatch, useEffect, useState } from "react";
 import FormElements from "../components/common/FormElements";
 import { registerSchema } from "../utils/schemas";
 import { useDispatch } from "react-redux";
@@ -55,9 +55,9 @@ const useStyles = makeStyles((theme: Theme) => ({
 const Register: React.FC = (props:any) => {
   const classes = useStyles();
   const [formValues, setFormValues] = useState<any>({});
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<Dispatch<any>>();
 
-  const formik = useFormik({
+  const formik:any = useFormik<any>({
     initialValues: formValues,
     validationSchema: registerSchema,
     onSubmit: (values) => {
@@ -65,7 +65,7 @@ const Register: React.FC = (props:any) => {
     }
   });
   
-  const handleSubmit = (values: any) => {
+  const handleSubmit = (values: any):void => {
     let payload = {
       ...values,
       userImage: formValues.preview,
@@ -76,7 +76,7 @@ const Register: React.FC = (props:any) => {
     }))
   }
 
-  const handleImage = (value: any, dataURL: string) => {
+  const handleImage = (value: any, dataURL: string):void => {
     setFormValues((prev:any) => ({...prev, preview: dataURL}))
     formik.setFieldValue("userImage", value)
   }

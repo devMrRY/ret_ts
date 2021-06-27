@@ -7,7 +7,15 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-const TextComp: React.FC<any> = ({label, name, multiple, helperText, type, handleChange}) => {
+export interface IFile {
+    label: string,
+    name: string,
+    multiple?: boolean,
+    helperText: string | null,
+    handleChange: Function
+}
+
+const FileComp: React.FC<IFile> = ({label, name, multiple, helperText, handleChange}) => {
     const classes = useStyles();
 
     const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +41,7 @@ const TextComp: React.FC<any> = ({label, name, multiple, helperText, type, handl
                 <input
                     id={label}
                     name={name}
-                    type={type}
+                    type="file"
                     multiple={multiple}
                     onChange={handleImage}
                 />
@@ -43,4 +51,4 @@ const TextComp: React.FC<any> = ({label, name, multiple, helperText, type, handl
     )
 }
 
-export default TextComp;
+export default FileComp;

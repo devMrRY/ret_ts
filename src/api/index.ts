@@ -40,12 +40,15 @@ class API {
   };
 
   static apiPost = async (key:string, args:any) => {
-    debugger
     return axios.post(getUrlByKey(key), args);
   };
 
   static apiPostUrl = async (key:string, dynamicUrl:string, args:any) => {
     return axios.post(getUrlByKey(key) + dynamicUrl, args);
+  };
+
+  static apiDelete = async (key:string, args:any) => {
+    return axios.delete(getUrlByKey(key) + args);
   };
 }
 

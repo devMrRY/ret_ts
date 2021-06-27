@@ -6,6 +6,7 @@ export const getFromLocalStorage = (key: string) => {
     return localStorage.getItem(key)
 }
 
-export const getToken = () => {
-    return getFromLocalStorage("token")
+export const checkAuth = () => {
+    const token:string = getFromLocalStorage("token")!;
+    return token;
 }

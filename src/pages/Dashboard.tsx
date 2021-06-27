@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -10,7 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import { Box, Theme, IconButton } from "@material-ui/core";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { usersListAction } from "../redux/actions/user";
+import { deleteUserAction, usersListAction } from "../redux/actions/user";
 import { Delete, Visibility } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -22,22 +22,23 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const Dashboard = () => {
+const Dashboard = (props:any) => {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const users = useSelector(({ users }: any) => users.users);
+  const dispatch = useDispatch<Dispatch<any>>()
 
+  const users = useSelector(({ users }: any) => users.users);
   useEffect(() => {
     dispatch(usersListAction());
     // eslint-disable-next-line
   }, []);
 
   const handleDelete = (id:number) => {
-      alert(id)
+      let args = `/${id}`
+      dispatch(deleteUserAction(args));
   }
 
   const handleView = (id:number) => {
-    alert(id)
+    props.history.push(`/view/${id}`)
   }
 
   return (

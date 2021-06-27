@@ -1,6 +1,17 @@
 import { TextField } from "@material-ui/core";
 
-const TextComp: React.FC<any> = ({label, name, variant, helperText, value, type, handleChange}) => {
+interface IText {
+    label: string,
+    name: string,
+    multiple?: boolean,
+    helperText?: string | null,
+    type: string,
+    handleChange: any,
+    variant?: "standard" | "filled" | "outlined",
+    value?: string
+}
+
+const TextComp: React.FC<IText> = ({label, name, variant, helperText, value, type, handleChange}) => {
     return (
         <TextField
             fullWidth

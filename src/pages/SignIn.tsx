@@ -4,10 +4,11 @@ import { signin } from "../utils/constants";
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { loginSchema } from "../utils/schemas";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FormElements from "../components/common/FormElements";
 import { loginAction } from "../redux/actions/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { checkAuth } from "../utils/helper";
 
 const useStyles = makeStyles((theme: Theme) => ({
   signin_container: {
@@ -48,23 +49,31 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
 }));
 
-const SignIn: React.FC = () => {
+function SignIn(props:any) {
   const classes = useStyles();
   const [formValues] = useState<any>({});
+  const isAuth = useSelector(({auth}:any)=>auth.isAuth);
+
+  useEffect(()=>{
+    if(isAuth || checkAuth()){
+      props.history.push('/dashboard');
+    }
+  },[isAuth])
+
   const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: formValues,
     validationSchema: loginSchema,
     onSubmit: (values) => {
-      handleSubmit(values)
+      handleSubmit(values);
     }
   });
-  
+
   const handleSubmit = (values: any) => {
     let query = `?email=${values.email}&password=${values.password}`;
     dispatch(loginAction(query));
-  }
+  };
 
   return (
     <Box className={clsx(classes.signin_container)}>
@@ -78,8 +87,7 @@ const SignIn: React.FC = () => {
                   {...item}
                   variant="outlined"
                   helperText={formik.errors[item.name]}
-                  value={formik.values[item.name]}
-                />
+                  value={formik.values[item.name]} />
               </Box>
             ))}
           </Box>
@@ -93,6 +101,6 @@ const SignIn: React.FC = () => {
       </Paper>
     </Box>
   );
-};
+}
 
 export default SignIn;
