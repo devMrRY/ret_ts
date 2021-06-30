@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios';
 import { Dispatch } from 'redux';
 import Api from '../../api/index';
 import { IAction } from '../../utils/interfaces';
-import { GET_USERS } from './types';
+import { GET_USERS, SET_ACTIVE_USER } from './types';
 
 export const usersListAction: () => void = () => async (dispatch: Dispatch<IAction>) => {
     try {
@@ -10,7 +10,7 @@ export const usersListAction: () => void = () => async (dispatch: Dispatch<IActi
         dispatch({ type: GET_USERS, payload: res.data })
     } catch (err) {
         console.log(err);
-    }
+    }  
 }
 
 export const deleteUserAction: (a:string) => void = (args:string) => async (dispatch: any) => {
@@ -20,4 +20,8 @@ export const deleteUserAction: (a:string) => void = (args:string) => async (disp
     } catch (err) {
         console.log(err);
     }
+}
+
+export const setActiveUserAction: (a:any) => void = (payload:any) => async (dispatch: any) => {
+    dispatch({ type: SET_ACTIVE_USER, payload })
 }

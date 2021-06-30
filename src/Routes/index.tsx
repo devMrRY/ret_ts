@@ -4,6 +4,7 @@ import SignIn from '../pages/SignIn';
 import Register from '../pages/Register';
 import ProtectedRoute from './ProtectedRoute';
 import NotFound from '../components/common/NotFound';
+import Profile from '../pages/Profile';
 
 const Routes = () => {
     return (
@@ -11,7 +12,7 @@ const Routes = () => {
             <Route exact path="/" component={SignIn} />
             <Route exact path="/register" component={Register} />
             <ProtectedRoute exact path="/dashboard" component={Dashboard} />
-            <ProtectedRoute exact path="/view/:userId" component={Dashboard} />
+            <ProtectedRoute exact path="/view/:userId" component={Profile} />
             <Route path="*" component={NotFound} />
         </Switch>
     )

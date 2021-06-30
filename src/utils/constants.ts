@@ -87,3 +87,9 @@ export const register: any = {
     }
   ]
 };
+
+export const profile:any = {
+  fields: [
+    ...register.fields.filter((item:any) => !["password", "confirm_password", "userImage"].includes(item.name))
+  ]
+}

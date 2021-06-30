@@ -28,3 +28,8 @@ export const registerSchema = loginSchema.shape({
       )
     })
 });
+
+export const profileSchema = registerSchema.shape({
+  confirm_password: yup.string(),
+  password: yup.string()
+});
