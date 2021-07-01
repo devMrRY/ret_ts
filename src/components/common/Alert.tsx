@@ -1,13 +1,16 @@
+import { Typography } from "@material-ui/core";
 import ModalComp from "./Modal";
 
-function Alert({ open, onCancel, message, onConfirm }: any){
+function Alert({ open, onCancel, message, showActions, onConfirm }: any){
     return (
         <ModalComp
             open={open}
             handleClose={onCancel}
-            size={"medium"}
+            handleConfirm={onConfirm}
+            size={"md"}
+            showActions={showActions}
         >
-            <p>{message}</p>
+            <Typography variant="h6">{message}</Typography>
         </ModalComp>
     )
 }

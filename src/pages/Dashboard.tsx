@@ -11,8 +11,9 @@ import { Box, Theme, IconButton } from "@material-ui/core";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteUserAction, usersListAction, setActiveUserAction } from "../redux/actions/user";
-import { Delete, Visibility } from '@material-ui/icons';
+import { Delete, Edit, Visibility } from '@material-ui/icons';
 import Alert from "../components/common/Alert";
+import { getFromLocalStorage } from "../utils/helper";
 
 const useStyles = makeStyles((theme: Theme) => ({
   table: {
@@ -29,7 +30,9 @@ const Dashboard = (props:any) => {
   const [activeId, setActiveId] = useState(-1);
   const [showAlert, setShowAlert] = useState(false);
 
+  const loggedInUser = JSON.parse(getFromLocalStorage("token") || "");
   const users = useSelector(({ users }: any) => users.users);
+  
   useEffect(() => {
     dispatch(usersListAction());
     // eslint-disable-next-line
@@ -40,10 +43,10 @@ const Dashboard = (props:any) => {
     toggleAlert();
   }
   
-  const handleView = (id:number) => {
+  const handleView = (id:number, path: string) => {
     let user = users.find((item:any) => item.id === id);
     dispatch(setActiveUserAction(user))
-    props.history.push(`/view/${id}`)
+    props.history.push(`/${path}/${id}`)
   }
   
   const toggleAlert = () => {
@@ -62,6 +65,7 @@ const Dashboard = (props:any) => {
         message={'Are you sure you want to delete this user ?'}
         onConfirm={onConfirm}
         onCancel={toggleAlert}
+        showActions={true}
       />
       <Box className={classes.dashboard_container}>
         <TableContainer component={Paper}>
@@ -83,10 +87,13 @@ const Dashboard = (props:any) => {
                   <TableCell align="left">{row.email}</TableCell>
                   <TableCell align="left">{row.address}</TableCell>
                   <TableCell align="left">
-                    <IconButton color="primary" size="small" aria-label="upload picture" onClick={() => handleView(row.id)}>
+                    {loggedInUser.role === "admin" && (<IconButton color="primary" size="small" aria-label="upload picture" onClick={() => handleView(row.id, 'edit')}>
+                      <Edit />
+                    </IconButton>)}
+                    <IconButton color="primary" size="small" aria-label="upload picture" onClick={() => handleView(row.id, 'view')}>
                       <Visibility />
                     </IconButton>
-                    <IconButton color="primary" size="small" aria-label="upload picture" onClick={() => handleDelete(row.id)}>
+                    <IconButton color="secondary" size="small" aria-label="upload picture" onClick={() => handleDelete(row.id)}>
                       <Delete />
                     </IconButton>
                   </TableCell>

@@ -8,10 +8,11 @@ interface IText {
     type: string,
     handleChange: any,
     variant?: "standard" | "filled" | "outlined",
-    value?: string
+    value?: string,
+    disabled?: boolean
 }
 
-const TextComp: React.FC<IText> = ({label, name, variant, helperText, value, type, handleChange}) => {
+const TextComp: React.FC<IText> = ({label, name, variant, helperText, value, type, handleChange, disabled}) => {
     return (
         <TextField
             fullWidth
@@ -24,6 +25,7 @@ const TextComp: React.FC<IText> = ({label, name, variant, helperText, value, typ
             value={value}
             type={type}
             onChange={handleChange}
+            disabled={disabled}
         />
     )
 }

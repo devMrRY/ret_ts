@@ -1,16 +1,14 @@
 import React, { Dispatch, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import { Box, Theme, IconButton, Button, Grid, Typography, Avatar } from "@material-ui/core";
+import { Box, Theme, Button, Grid, Typography, Avatar } from "@material-ui/core";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { usersListAction } from "../redux/actions/user";
-import { Delete, Visibility } from '@material-ui/icons';
 import { profile } from "../utils/constants";
-import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import FormElements from "../components/common/FormElements";
+import FileUpload from "../components/FormItems/FileUpload";
 import { profileSchema } from "../utils/schemas";
+import { getUserById, updateUser } from '../redux/actions/user';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dashboard_container: {
@@ -35,65 +33,101 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: theme.spacing(20),
     height: theme.spacing(20),
     marginBottom: theme.spacing(4)
+  },
+  img_container: {
+    '& input[type="file"]':{
+      display: 'none'
+    }
   }
 }));
 
 const Profile = (props:any) => {
   const classes = useStyles();
+  const fileRef = React.createRef<any>();
   const dispatch = useDispatch<Dispatch<any>>();
-  const [formValues, setFormValues] = useState<any>({ userImage: true });
+  const [formValues, setFormValues] = useState<any>({});
+  const [preview, setPreview] = useState<any>(true);
+  const [edit, setEdit] = useState<any>(false);
   const selectedUser = useSelector(({ users }: any) => users.activeUser);
 
   useEffect(()=>{
+    if(props.location.pathname.includes('edit')){
+      setEdit(true)
+    }
     if(!selectedUser){
-      // dispatch(()=>{})
+      const id = props.match.params.userId
+      dispatch(getUserById(`/${id}`))
     }
   },[])
-
+  
   useEffect(()=>{
+    setPreview(selectedUser?.userImage)
+    delete selectedUser?.userImage;
     setFormValues((prev: object) => ({ ...prev, ...selectedUser }))
   },[selectedUser])
 
   const formik:any = useFormik<any>({
     initialValues: formValues,
     validationSchema: profileSchema,
+    enableReinitialize: true,
     onSubmit: (values) => {
       handleSubmit(values)
     }
   });
-  
+
   const handleSubmit = (values: any):void => {
     let payload = {
       ...values,
-      userImage: formValues.userImage,
-      confirm_password: undefined
+      userImage: preview
     }
+    dispatch(updateUser(payload.id, payload))
   }
 
   const handleImage = (value: any, dataURL: string):void => {
-    setFormValues((prev:any) => ({...prev, userImage: dataURL}))
+    setPreview(dataURL)
     formik.setFieldValue("userImage", value)
   }
-  console.log(formik.values)
+
+  const handleFile = () => {
+    edit && fileRef.current.click()
+  }
+
+  const handleCancel = () => {
+    setPreview(selectedUser?.userImage)
+    delete selectedUser?.userImage;
+    setFormValues((prev: any) => ({ ...prev, ...selectedUser }))
+  }
+  
   return (
     <Box className={classes.dashboard_container}>
       <Typography variant="h4">Profile</Typography>
-      {formValues.userImage && <Avatar className={classes.avatar} src={formValues.userImage} alt='user' />}
+      <Box className={classes.img_container}>
+        <FileUpload 
+          handleChange={handleImage}
+          label="file"
+          name="file"
+          helperText={formik.errors['userImage']}
+          ref={fileRef}
+        />
+      </Box>
+      {preview && <Avatar onClick={handleFile} className={classes.avatar} src={preview || formValues.userImage} alt='user' />}
       <form onSubmit={formik.handleSubmit} autoComplete="off">
         <Grid container spacing={2} onChange={formik.handleChange}>
             {profile.fields?.map((item: any, i: number) => (
-              <Grid key={i} item xs={12} sm={12}>
+              <Grid key={i} item md={6} sm={12}>
                 <FormElements
                   {...item}
                   helperText={formik.errors[item.name]}
                   value={formik.values[item.name]}
+                  disabled={!edit}
                 />
               </Grid>
             ))}
         </Grid>
-        <Box className="theme-btn-container">
-          <Button type="submit" color="primary" variant="contained">Submit</Button>
-        </Box>
+        {edit && (<Box className="theme-btn-container">
+          <Button type="submit" color="primary" variant="contained">Submit</Button>&nbsp;&nbsp;
+          <Button color="secondary" variant="contained" onClick={handleCancel}>Cancel</Button>
+        </Box>)}
       </form>
     </Box>
   );

@@ -11,3 +11,5 @@ export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
 export const REGISTER_FAIL = "REGISTER_FAIL";
 
 export const SET_ACTIVE_USER = "SET_ACTIVE_USER";
+export const SET_TOAST = "SET_TOAST";
+export const CLEAR_TOAST = "CLEAR_TOAST";

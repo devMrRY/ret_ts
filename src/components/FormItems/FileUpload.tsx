@@ -1,3 +1,4 @@
+import React from 'react';
 import { Typography, makeStyles, Theme, Box } from "@material-ui/core";
 import clsx from "clsx";
 
@@ -12,10 +13,11 @@ export interface IFile {
     name: string,
     multiple?: boolean,
     helperText: string | null,
-    handleChange: Function
+    handleChange: Function,
+    ref?: any
 }
 
-const FileComp: React.FC<IFile> = ({label, name, multiple, helperText, handleChange}) => {
+const FileComp: React.FC<IFile> = React.forwardRef<any, IFile>(({label, name, multiple, helperText, handleChange}, ref) => {
     const classes = useStyles();
 
     const handleImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,11 +46,13 @@ const FileComp: React.FC<IFile> = ({label, name, multiple, helperText, handleCha
                     type="file"
                     multiple={multiple}
                     onChange={handleImage}
+                    ref={ref}
+                    accept=".png, .jpg, .jpeg, .webp, .bmp"
                 />
             </Box>
             <Typography variant="caption" className={clsx({[classes.helperText]: !!helperText})}>{helperText}</Typography>
         </>
     )
-}
+})
 
 export default FileComp;

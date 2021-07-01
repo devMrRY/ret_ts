@@ -47,6 +47,10 @@ class API {
     return axios.post(getUrlByKey(key) + dynamicUrl, args);
   };
 
+  static apiPutUrl = async (key:string, dynamicUrl:string, args:any) => {
+    return axios.put(getUrlByKey(key) + dynamicUrl, args);
+  };
+
   static apiDelete = async (key:string, args:any) => {
     return axios.delete(getUrlByKey(key) + args);
   };

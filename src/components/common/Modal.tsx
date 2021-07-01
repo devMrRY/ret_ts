@@ -1,23 +1,45 @@
-import { DialogTitle, Dialog, DialogActions, DialogContent} from '@material-ui/core';
+import {
+  DialogTitle,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Button,
+} from "@material-ui/core";
 
-function ModalComp({ open, maxWidth="md", title, children, disableBackdropClick, handleClose }: any) {
+function ModalComp({
+  open,
+  size = "md",
+  title,
+  children,
+  disableBackdropClick,
+  handleClose,
+  handleConfirm,
+  showActions,
+  renderActions
+}: any) {
   return (
     <Dialog
       disableBackdropClick={disableBackdropClick}
       disableEscapeKeyDown
-      maxWidth={maxWidth}
+      maxWidth={size}
       aria-labelledby="confirmation-dialog-title"
       open={open}
+      onClose={handleClose}
     >
       {title && <DialogTitle>{title}</DialogTitle>}
-      <DialogContent>
-        {children}
-      </DialogContent>
-      {
-        <DialogActions>
-          
-        </DialogActions>
-      }
+      <DialogContent>{children}</DialogContent>
+      {showActions && <DialogActions>
+          {renderActions ? renderActions : (
+            <>
+              <Button variant="outlined" onClick={handleClose} color="secondary">
+                Cancel
+              </Button>
+              <Button variant="outlined" onClick={handleConfirm} color="primary" autoFocus>
+                Ok
+              </Button>
+            </>
+          )}
+        </DialogActions>}
     </Dialog>
   );
 }

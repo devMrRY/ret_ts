@@ -6,7 +6,8 @@ interface IForm {
     name: string,
     type: "file" | "text",
     handleChange: Function,
-    helperText: string | null
+    helperText: string | null,
+    disabled: boolean
 }
 
 const FormElements: React.FC<IForm> = ({ field, ...rest }) => {
