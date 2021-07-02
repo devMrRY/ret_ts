@@ -18,7 +18,7 @@ export const usersListAction: () => void = () => async (dispatch: Dispatch<IActi
         dispatch({ type: GET_USERS, payload: res.data })
     } catch (err) {
         console.log(err);
-    }  
+    }
 }
 
 export const deleteUserAction: (a:string) => void = (args:string) => async (dispatch: any) => {

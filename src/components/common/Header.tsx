@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export default function ButtonAppBar(props:any) {
+export default function ButtonAppBar() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const user:any = JSON.parse(getFromLocalStorage("token") || "");

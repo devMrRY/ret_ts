@@ -5,9 +5,10 @@ interface IForm {
     label: string,
     name: string,
     type: "file" | "text",
-    handleChange: Function,
+    handleChange: any,
     helperText: string | null,
-    disabled: boolean
+    disabled: boolean,
+    variant?: "standard" | "outlined" | "filled"
 }
 
 const FormElements: React.FC<IForm> = ({ field, ...rest }) => {

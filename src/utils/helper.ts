@@ -1,12 +1,12 @@
-export const setLocalStorage = (key: string, payload: any) => {
+export const setLocalStorage = (key: string, payload: any): void => {
     localStorage.setItem(key, payload)
 }
 
-export const getFromLocalStorage = (key: string) => {
+export const getFromLocalStorage = (key: string): string | null => {
     return localStorage.getItem(key)
 }
 
-export const checkAuth = () => {
+export const checkAuth = (): string => {
     const token:string = getFromLocalStorage("token")!;
     return token;
 }

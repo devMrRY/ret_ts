@@ -49,9 +49,9 @@ const Profile = (props:any) => {
   const dispatch = useDispatch<Dispatch<any>>();
   const [formValues, setFormValues] = useState<any>({});
   const [preview, setPreview] = useState<any>(true);
-  const [edit, setEdit] = useState<any>(false);
+  const [edit, setEdit] = useState<boolean>(false);
   const selectedUser = useSelector(({ users }: any) => users.activeUser);
-  const loggedInUser = JSON.parse(getFromLocalStorage("token") || "");
+  const loggedInUser = JSON.parse(getFromLocalStorage("token")!);
 
   useEffect(()=>{
     const id = props.match.params.userId
@@ -87,7 +87,7 @@ const Profile = (props:any) => {
     dispatch(updateUser(payload.id, payload))
   }
 
-  const handleImage = (value: any, dataURL: string):void => {
+  const handleImage = (value: Blob, dataURL: string):void => {
     setPreview(dataURL)
     formik.setFieldValue("userImage", value)
   }

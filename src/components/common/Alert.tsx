@@ -1,7 +1,15 @@
 import { Typography } from "@material-ui/core";
 import ModalComp from "./Modal";
 
-function Alert({ open, onCancel, message, showActions, onConfirm }: any){
+interface IAlert {
+    open: boolean,
+    onCancel(): void,
+    message: string,
+    showActions: boolean,
+    onConfirm(): void
+}
+
+function Alert({ open, onCancel, message, showActions, onConfirm }: IAlert){
     return (
         <ModalComp
             open={open}

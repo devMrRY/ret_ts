@@ -14,8 +14,8 @@ const useStyles = makeStyles(() => ({
 
 interface ISearch {
     label?: string,
-    handleSubmit: Function,
-    handleClear: Function
+    handleSubmit(a: string): void,
+    handleClear(): void
 }
 
 const Search = ({handleSubmit, handleClear, label=""}:ISearch) => {

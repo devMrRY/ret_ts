@@ -6,7 +6,7 @@ import ProtectedRoute from './ProtectedRoute';
 import NotFound from '../components/common/NotFound';
 import Profile from '../pages/Profile';
 
-const Routes = () => {
+const Routes: React.FC = () => {
     return (
         <Switch>
             <Route exact path="/" component={SignIn} />

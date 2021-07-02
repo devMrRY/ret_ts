@@ -40,7 +40,7 @@ const Dashboard = (props:any) => {
   const [showAlert, setShowAlert] = useState<boolean>(false);
   const [list, setList] = useState<any>([]);
 
-  const loggedInUser = JSON.parse(getFromLocalStorage("token") || "");
+  const loggedInUser = JSON.parse(getFromLocalStorage("token")!);
   const users = useSelector(({ users }: any) => users.users);
   
   useEffect(()=>{

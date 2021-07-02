@@ -9,6 +9,7 @@ import FormElements from "../components/common/FormElements";
 import { loginAction } from "../redux/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { checkAuth } from "../utils/helper";
+import { IRootState } from "../redux/reducers";
 
 const useStyles = makeStyles((theme: Theme) => ({
   signin_container: {
@@ -53,7 +54,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 function SignIn(props:any) {
   const classes = useStyles();
   const [formValues] = useState<any>({});
-  const isAuth = useSelector(({auth}:any)=>auth.isAuth);
+  const isAuth = useSelector(({auth}:IRootState):boolean=>auth.isAuth);
 
   useEffect(()=>{
     if(isAuth || checkAuth()){

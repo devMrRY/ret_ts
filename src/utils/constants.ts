@@ -1,4 +1,4 @@
-export const signin = {
+export const signin: any = {
   fields: [
     {
       field: "textbox",

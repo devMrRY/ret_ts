@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default function Toastr({ onClose }: any) {
+export default function Toastr({ onClose }: { onClose(): void}) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { message, type, open } = useSelector(({common}:any)=> common.toast);

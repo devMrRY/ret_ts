@@ -5,6 +5,17 @@ import {
   DialogContent,
   Button,
 } from "@material-ui/core";
+interface IModal {
+  open: boolean,
+  title?: string,
+  disableBackdropClick?: boolean,
+  handleClose?(): void,
+  handleConfirm?(): void,
+  showActions: boolean,
+  renderActions?: React.ReactNode,
+  children?: React.ReactNode,
+  size?: false | "md" | "xs" | "sm" | "lg" | "xl"
+}
 
 function ModalComp({
   open,
@@ -16,7 +27,7 @@ function ModalComp({
   handleConfirm,
   showActions,
   renderActions
-}: any) {
+}: IModal) {
   return (
     <Dialog
       disableBackdropClick={disableBackdropClick}
