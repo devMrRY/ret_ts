@@ -34,8 +34,8 @@ export const profileSchema = registerSchema.shape({
   password: yup.string(),
   userImage: yup.mixed()
     .test("type", "Only the following formats are accepted: .jpeg, .jpg, .bmp, .png", (value) => {
-      return !value || value && (
+      return !value || (value && (
         ["image/jpeg", "image/jpg", "image/webp", "image/bmp", "image/png"].includes(value.type)
-      )
+      ))
     })
 });

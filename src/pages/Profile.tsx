@@ -9,6 +9,8 @@ import FormElements from "../components/common/FormElements";
 import FileUpload from "../components/FormItems/FileUpload";
 import { profileSchema } from "../utils/schemas";
 import { getUserById, updateUser } from '../redux/actions/user';
+import { getFromLocalStorage } from "../utils/helper";
+import Header from '../components/common/Header';
 
 const useStyles = makeStyles((theme: Theme) => ({
   dashboard_container: {
@@ -49,15 +51,17 @@ const Profile = (props:any) => {
   const [preview, setPreview] = useState<any>(true);
   const [edit, setEdit] = useState<any>(false);
   const selectedUser = useSelector(({ users }: any) => users.activeUser);
+  const loggedInUser = JSON.parse(getFromLocalStorage("token") || "");
 
   useEffect(()=>{
-    if(props.location.pathname.includes('edit')){
+    const id = props.match.params.userId
+    if(props.location.pathname.includes('edit') && (loggedInUser.role === "admin" || loggedInUser.id.toString() === id.toString())){
       setEdit(true)
     }
     if(!selectedUser){
-      const id = props.match.params.userId
       dispatch(getUserById(`/${id}`))
     }
+    // eslint-disable-next-line
   },[])
   
   useEffect(()=>{
@@ -97,39 +101,42 @@ const Profile = (props:any) => {
     delete selectedUser?.userImage;
     setFormValues((prev: any) => ({ ...prev, ...selectedUser }))
   }
-  
+
   return (
-    <Box className={classes.dashboard_container}>
-      <Typography variant="h4">Profile</Typography>
-      <Box className={classes.img_container}>
-        <FileUpload 
-          handleChange={handleImage}
-          label="file"
-          name="file"
-          helperText={formik.errors['userImage']}
-          ref={fileRef}
-        />
+    <>
+      <Header />
+      <Box className={classes.dashboard_container}>
+        <Typography variant="h4">Profile</Typography>
+        <Box className={classes.img_container}>
+          <FileUpload 
+            handleChange={handleImage}
+            label="file"
+            name="file"
+            helperText={formik.errors['userImage']}
+            ref={fileRef}
+          />
+        </Box>
+        {preview && <Avatar onClick={handleFile} className={classes.avatar} src={preview.toString() || formValues.userImage} alt='user' />}
+        <form onSubmit={formik.handleSubmit} autoComplete="off">
+          <Grid container spacing={2} onChange={formik.handleChange}>
+              {profile.fields?.map((item: any, i: number) => (
+                <Grid key={i} item md={6} sm={12}>
+                  <FormElements
+                    {...item}
+                    helperText={formik.errors[item.name]}
+                    value={formik.values[item.name]}
+                    disabled={!edit}
+                  />
+                </Grid>
+              ))}
+          </Grid>
+          {edit && (<Box className="theme-btn-container">
+            <Button type="submit" color="primary" variant="contained">Submit</Button>&nbsp;&nbsp;
+            <Button color="secondary" variant="contained" onClick={handleCancel}>Cancel</Button>
+          </Box>)}
+        </form>
       </Box>
-      {preview && <Avatar onClick={handleFile} className={classes.avatar} src={preview || formValues.userImage} alt='user' />}
-      <form onSubmit={formik.handleSubmit} autoComplete="off">
-        <Grid container spacing={2} onChange={formik.handleChange}>
-            {profile.fields?.map((item: any, i: number) => (
-              <Grid key={i} item md={6} sm={12}>
-                <FormElements
-                  {...item}
-                  helperText={formik.errors[item.name]}
-                  value={formik.values[item.name]}
-                  disabled={!edit}
-                />
-              </Grid>
-            ))}
-        </Grid>
-        {edit && (<Box className="theme-btn-container">
-          <Button type="submit" color="primary" variant="contained">Submit</Button>&nbsp;&nbsp;
-          <Button color="secondary" variant="contained" onClick={handleCancel}>Cancel</Button>
-        </Box>)}
-      </form>
-    </Box>
+    </>
   );
 };
 

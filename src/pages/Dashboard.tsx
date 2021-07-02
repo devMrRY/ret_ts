@@ -14,6 +14,8 @@ import { deleteUserAction, usersListAction, setActiveUserAction } from "../redux
 import { Delete, Edit, Visibility } from '@material-ui/icons';
 import Alert from "../components/common/Alert";
 import { getFromLocalStorage } from "../utils/helper";
+import Search from '../components/common/search';
+import Header from '../components/common/Header';
 
 const useStyles = makeStyles((theme: Theme) => ({
   table: {
@@ -22,17 +24,31 @@ const useStyles = makeStyles((theme: Theme) => ({
   dashboard_container: {
     padding: theme.spacing(5),
   },
+  search_container: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    '& #search-box' :{
+      width: 300
+    }
+  }
 }));
 
 const Dashboard = (props:any) => {
   const classes = useStyles();
   const dispatch = useDispatch<Dispatch<any>>()
-  const [activeId, setActiveId] = useState(-1);
-  const [showAlert, setShowAlert] = useState(false);
+  const [activeId, setActiveId] = useState<number>(-1);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [list, setList] = useState<any>([]);
 
   const loggedInUser = JSON.parse(getFromLocalStorage("token") || "");
   const users = useSelector(({ users }: any) => users.users);
   
+  useEffect(()=>{
+    if(users?.length){
+      setList(users)
+    }
+  },[users])
+
   useEffect(() => {
     dispatch(usersListAction());
     // eslint-disable-next-line
@@ -49,13 +65,24 @@ const Dashboard = (props:any) => {
     props.history.push(`/${path}/${id}`)
   }
   
-  const toggleAlert = () => {
+  const toggleAlert = ():void => {
     setShowAlert((prev: Boolean) => !prev);
   }
     
-  const onConfirm = () => {
+  const onConfirm = ():void => {
     dispatch(deleteUserAction(`/${activeId}`));
     toggleAlert();
+  }
+
+  const handleSearch = (value:string):void => {
+    setList(users.filter((el:any)=> (
+      el.email.toLowerCase().includes(value.toLowerCase()) || el.firstname.toLowerCase().includes(value.toLowerCase()) ||
+      (el.lastname && el.lastname.toLowerCase().includes(value.toLowerCase()))
+    )))
+  }
+
+  const handleClear = ():void => {
+    setList(users)
   }
 
   return (
@@ -67,35 +94,42 @@ const Dashboard = (props:any) => {
         onCancel={toggleAlert}
         showActions={true}
       />
+      <Header />
       <Box className={classes.dashboard_container}>
+        <Box className={classes.search_container}>
+          <Search label="Search by name/email" handleSubmit={handleSearch} handleClear={handleClear} />
+        </Box>
         <TableContainer component={Paper}>
           <Table className={classes.table} aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell>First Name</TableCell>
+                <TableCell>Name</TableCell>
                 <TableCell align="left">Email</TableCell>
+                <TableCell align="left">Phone</TableCell>
                 <TableCell align="left">Address</TableCell>
                 <TableCell align="left">Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {users?.map((row: any) => (
+              {list?.map((row: any) => (
                 <TableRow key={row.id}>
                   <TableCell component="th" scope="row">
-                    {row.firstname}
+                    {`${row.firstname} ${row.lastname || ''}`}
                   </TableCell>
                   <TableCell align="left">{row.email}</TableCell>
+                  <TableCell align="left">{row.phone}</TableCell>
                   <TableCell align="left">{row.address}</TableCell>
                   <TableCell align="left">
-                    {loggedInUser.role === "admin" && (<IconButton color="primary" size="small" aria-label="upload picture" onClick={() => handleView(row.id, 'edit')}>
-                      <Edit />
-                    </IconButton>)}
                     <IconButton color="primary" size="small" aria-label="upload picture" onClick={() => handleView(row.id, 'view')}>
                       <Visibility />
                     </IconButton>
-                    <IconButton color="secondary" size="small" aria-label="upload picture" onClick={() => handleDelete(row.id)}>
+                    {(loggedInUser.role === "admin" || loggedInUser.id.toString() === row.id.toString()) && <IconButton color="inherit" size="small" aria-label="upload picture" onClick={() => handleView(row.id, 'edit')}>
+                        <Edit />
+                      </IconButton>
+                    }
+                    {loggedInUser.role === "admin" && <IconButton color="secondary" size="small" aria-label="upload picture" onClick={() => handleDelete(row.id)}>
                       <Delete />
-                    </IconButton>
+                    </IconButton>}
                   </TableCell>
                 </TableRow>
               ))}

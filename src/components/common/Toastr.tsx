@@ -24,7 +24,8 @@ export default function Toastr({ onClose }: any) {
     useEffect(()=>{
         setTimeout(()=>{
             dispatch(clearToastAction())
-        },3000)
+        },5000)
+        // eslint-disable-next-line
     },[open])
 
   return (

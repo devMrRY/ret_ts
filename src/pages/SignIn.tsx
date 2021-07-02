@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     minHeight: `${theme.spacing(20)}vh`,
     "& .MuiPaper-root": {
       padding: theme.spacing(6),
+      minWidth: 400,
     },
     "& h4": {
       marginBottom: theme.spacing(4),
@@ -58,6 +59,7 @@ function SignIn(props:any) {
     if(isAuth || checkAuth()){
       props.history.push('/dashboard');
     }
+    // eslint-disable-next-line
   },[isAuth])
 
   const dispatch = useDispatch();

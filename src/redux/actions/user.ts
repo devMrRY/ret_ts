@@ -23,7 +23,7 @@ export const usersListAction: () => void = () => async (dispatch: Dispatch<IActi
 
 export const deleteUserAction: (a:string) => void = (args:string) => async (dispatch: any) => {
     try {
-        const res:AxiosResponse<any> = await Api.apiDelete("users", args)
+        await Api.apiDelete("users", args)
         dispatch(usersListAction())
     } catch (err) {
         console.log(err);

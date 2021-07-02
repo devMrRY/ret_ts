@@ -7,8 +7,7 @@ import Button from '@material-ui/core/Button';
 import { logoutAction } from '../../redux/actions/auth';
 import { useDispatch } from 'react-redux';
 import { getFromLocalStorage } from '../../utils/helper';
-import { Link } from 'react-router-dom';
-import { PinDropSharp } from '@material-ui/icons';
+import { Link, useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -32,10 +31,11 @@ export default function ButtonAppBar(props:any) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const user:any = JSON.parse(getFromLocalStorage("token") || "");
+  const history = useHistory();
 
   const handleLogout = () => {
     dispatch(logoutAction(()=>{
-        props.history.push('/')
+        history.push('/')
     }))
   }
   

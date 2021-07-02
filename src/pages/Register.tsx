@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
       },
     },
     "& .MuiPaper-rounded": {
-      width: 380
+      width: 400
     }
   },
   avatar: {
@@ -69,7 +69,8 @@ const Register: React.FC = (props:any) => {
     let payload = {
       ...values,
       userImage: formValues.preview,
-      confirm_password: undefined
+      confirm_password: undefined,
+      role: 'user'
     }
     dispatch(registerAction(payload, ()=>{
       props.history.push('/');
